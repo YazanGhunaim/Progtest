@@ -1,0 +1,4 @@
+Point A:
+Point B:
+Point C:
+No line connects all points.

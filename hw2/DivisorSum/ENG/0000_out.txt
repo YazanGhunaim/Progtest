@@ -1,0 +1,4 @@
+Intervals:
+4
+8
+Total: 2

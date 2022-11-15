@@ -1,0 +1,4 @@
+Matrix:
+Horizontal symmetry: no
+Vertical symmetry: yes
+Center symmetry: no

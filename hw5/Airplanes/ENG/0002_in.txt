@@ -1,0 +1,3 @@
+-10,-5: Ryanair
+10,0: LOT
+12,12: SmartWings
