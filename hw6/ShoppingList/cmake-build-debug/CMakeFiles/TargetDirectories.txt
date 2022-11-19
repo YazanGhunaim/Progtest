@@ -1,0 +1,3 @@
+/Users/yazanghunaim/Documents/progtest/2022/hw6/ShoppingList/cmake-build-debug/CMakeFiles/ShoppingList.dir
+/Users/yazanghunaim/Documents/progtest/2022/hw6/ShoppingList/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/yazanghunaim/Documents/progtest/2022/hw6/ShoppingList/cmake-build-debug/CMakeFiles/rebuild_cache.dir

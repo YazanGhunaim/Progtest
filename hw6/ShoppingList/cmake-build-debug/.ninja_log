@@ -1,0 +1,9 @@
+# ninja log v5
+0	159	1668861556763913886	CMakeFiles/ShoppingList.dir/shoppingList.c.o	2b1b869761a8fc4c
+159	200	1668861556807229092	ShoppingList	2e28ff97eb371184
+0	193	1668866081554484755	CMakeFiles/ShoppingList.dir/shoppingList.c.o	2b1b869761a8fc4c
+193	238	1668866081602405430	ShoppingList	2e28ff97eb371184
+0	145	1668866230312425469	CMakeFiles/ShoppingList.dir/shoppingList.c.o	2b1b869761a8fc4c
+146	190	1668866230358409300	ShoppingList	2e28ff97eb371184
+1	35	1668869961255495083	CMakeFiles/ShoppingList.dir/shoppingList.c.o	2b1b869761a8fc4c
+35	69	1668869961290487206	ShoppingList	2e28ff97eb371184
