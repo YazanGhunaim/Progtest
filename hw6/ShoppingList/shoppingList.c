@@ -17,7 +17,6 @@ int readGoods(shelf **array, int id, int *initialSize, int *length)
 {
     int count = *length;
     int first = 1;
-    char buffer;
     char c = 0;
 
     while ((c = getchar()) != EOF)
@@ -29,30 +28,11 @@ int readGoods(shelf **array, int id, int *initialSize, int *length)
         }
         if (first)
         {
-            (*array)[count].goods[0] = c;
-            if (c == '#')
-            {
-                if (scanf("%d", &id) == 1)
-                {
-                    fgets(&(*array)[count].goods[0], maxChar, stdin);
-                    (*array)[count].shelfID = id;
-                    count++;
-                    *length = count;
-                }
-                else
-                {
-                    printf(invalid);
-                    return 1;
-                }
-            }
-            else
-            {
-                fgets(&(*array)[count].goods[0], maxChar, stdin);
-                (*array)[count].shelfID = id;
-                count++;
-                *length = count;
-                first = 0;
-            }
+            fgets(&(*array)[count].goods[0], maxChar, stdin);
+            (*array)[count].shelfID = id;
+            count++;
+            *length = count;
+            first = 0;
         }
         else
         {
