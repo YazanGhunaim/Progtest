@@ -1,0 +1,5 @@
+0,5: Qantas
+5,0: KLM
+0,0: AirFrance
+5,5: Lufthansa
+2.5,2.5: KLM

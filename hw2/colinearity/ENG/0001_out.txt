@@ -1,0 +1,5 @@
+Point A:
+Point B:
+Point C:
+There exists a line connecting all three points.
+Point B is in the middle.

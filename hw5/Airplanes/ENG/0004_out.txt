@@ -1,0 +1,9 @@
+Plane coordinates:
+Minimum airplane distance: 0.000000
+Pairs found: 6
+AirFrance - Lufthansa
+AirFrance - LOT
+Lufthansa - LOT
+Ryanair - Wizz
+Ryanair - Qantas
+Wizz - Qantas

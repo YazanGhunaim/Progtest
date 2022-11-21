@@ -1,0 +1,4 @@
+Plane coordinates:
+Minimum airplane distance: 12.165525
+Pairs found: 1
+LOT - SmartWings
