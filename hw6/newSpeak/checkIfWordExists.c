@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *checkIfExists(const char *(*replace)[2], const char *string)
+char *checkIfExists(const char *(*replace)[2], char *string)
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
