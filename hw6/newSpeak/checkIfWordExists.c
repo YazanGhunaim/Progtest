@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *checkIfExists(const char *(*replace)[2], char *string)
+char *checkIfExists(const char *(*replace)[2],char *string)
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
@@ -23,7 +23,7 @@ char *checkIfExists(const char *(*replace)[2], char *string)
     return res;
 }
 
-char *res(const char *s)
+char *m(const char *s)
 {
     char *c = (char *)malloc(strlen(s) + 1);
     strcpy(c, s);
@@ -55,10 +55,10 @@ int main()
     const char *str2 = "student";
     const char *str3 = "you are one hell of a student";
 
-    char *str4 = res(str);
-    char *str5 = res(str1);
-    char *str6 = res(str2);
-    char *str7 = res(str3);
+    char *str4 = m(str);
+    char *str5 = m(str1);
+    char *str6 = m(str2);
+    char *str7 = m(str3);
 
     printf("strings 1-4: \n");
     printf("%s\n", str4);
@@ -71,5 +71,10 @@ int main()
     printf("%s\n", checkIfExists(d1, str6));
     printf("%s\n", checkIfExists(d1, str7));
 
+    free(str4);
+    free(str5);
+    free(str6);
+    free(str7);
     return 0;
 }
+
