@@ -41,7 +41,7 @@ int startWith(const char *string, const char *start)
     int start_length = strlen(start);
 
     if (start_length > string_length)
-        return false;
+        return 0;
 
     for (int i = 0; i < start_length; i++)
     {
