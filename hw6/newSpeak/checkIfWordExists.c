@@ -31,7 +31,8 @@ char *m(const char *s)
     return c;
 }
 
-bool startWith(const char *string, const char *start)
+
+int startWith(const char *string, const char *start)
 {
     int string_length = strlen(string);
     int start_length = strlen(start);
@@ -43,13 +44,13 @@ bool startWith(const char *string, const char *start)
     {
         if (string[i] != start[i])
         {
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
-bool checkPrefix(const char *string, const char *(*replace)[2], size_t rows, size_t index)
+int checkPrefix(const char *string, const char *(*replace)[2], size_t rows, size_t index)
 {
 
     size_t lengthOfString = strlen(string);
@@ -65,12 +66,12 @@ bool checkPrefix(const char *string, const char *(*replace)[2], size_t rows, siz
             continue;
 
         if (startWith((*replace[i]), string))
-            return false;
+            return 0;
     }
-    return true;
+    return 1;
 }
 
-bool checkPrefixInArray(const char *(*replace)[2])
+int checkPrefixInArray(const char *(*replace)[2])
 {
 
     size_t numOfRows = 0;
@@ -84,10 +85,10 @@ bool checkPrefixInArray(const char *(*replace)[2])
     {
         if (!checkPrefix(*replace[i], replace, numOfRows, i))
         {
-            return true;
+            return 1;
         }
     }
-    return false;
+    return 0;
 }
 
 int main()
