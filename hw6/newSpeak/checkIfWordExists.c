@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-char *checkIfExists(const char *(*replace)[2],char *string)
+char *checkIfExists(const char *(*replace)[2], char *string)
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
@@ -30,6 +31,65 @@ char *m(const char *s)
     return c;
 }
 
+bool startWith(const char *string, const char *start)
+{
+    int string_length = strlen(string);
+    int start_length = strlen(start);
+
+    if (start_length > string_length)
+        return false;
+
+    for (int i = 0; i < start_length; i++)
+    {
+        if (string[i] != start[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool checkPrefix(const char *string, const char *(*replace)[2], size_t rows, size_t index)
+{
+
+    size_t lengthOfString = strlen(string);
+
+    for (size_t i = 0; i < rows; i++)
+    {
+        if (i == index)
+            continue;
+
+        size_t lengthOfArrayString = strlen(*replace[i]);
+
+        if (lengthOfString > lengthOfArrayString)
+            continue;
+
+        if (startWith((*replace[i]), string))
+            return false;
+    }
+    return true;
+}
+
+bool checkPrefixInArray(const char *(*replace)[2])
+{
+
+    size_t numOfRows = 0;
+    // finding the number of rows using endpoint NULL;
+    for (int i = 0; *replace[i]; i++)
+    {
+        numOfRows++;
+    }
+
+    for (size_t i = 0; i < numOfRows; ++i)
+    {
+        if (!checkPrefix(*replace[i], replace, numOfRows, i))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int main()
 {
     const char *d1[][2] =
@@ -48,6 +108,13 @@ int main()
         {
             {"fail", "suboptimal result"},
             {"failure", "non-traditional success"},
+            {NULL, NULL}};
+
+    const char *d3[][2] =
+        {
+            {"Roses are Red", "suboptimal result"},
+            {"Violet", "non-traditional success"},
+            {"Roses", "non-traditional success"},
             {NULL, NULL}};
 
     const char *str = "dosao";
@@ -71,10 +138,39 @@ int main()
     printf("%s\n", checkIfExists(d1, str6));
     printf("%s\n", checkIfExists(d1, str7));
 
+    printf("\nIs d2 valid? \"should be yes\" \n");
+    if (checkPrefixInArray(d1))
+    {
+        printf("Invalid array.\n");
+    }
+    else
+    {
+        printf("Valid array.\n");
+    }
+
+    printf("\nIs d2 valid? \"should be no\" \n");
+    if (checkPrefixInArray(d2))
+    {
+        printf("Invalid array.\n");
+    }
+    else
+    {
+        printf("Valid array.\n");
+    }
+
+    printf("\nIs d3 valid? \"should be no\" \n");
+    if (checkPrefixInArray(d3))
+    {
+        printf("Invalid array.\n");
+    }
+    else
+    {
+        printf("Valid array.\n");
+    }
+
     free(str4);
     free(str5);
     free(str6);
     free(str7);
     return 0;
 }
-
