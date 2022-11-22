@@ -96,7 +96,11 @@ int checkPrefixInArray(const char *(*replace)[2])
 
 char * newSpeak ( const char * text, const char * (*replace)[2] )
 {
-  /* todo */
+  char *res = m(text);
+  
+  if (checkPrefixInArray(replace))
+    return NULL;
+  
 }
 
 #ifndef __PROGTEST__
