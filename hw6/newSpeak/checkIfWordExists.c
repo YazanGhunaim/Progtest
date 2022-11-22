@@ -66,7 +66,7 @@ int main()
     printf("%s\n", str6);
     printf("%s\n\n", str7);
 
-    printf("%s\n", checkIfExists(d2, str4));
+    printf("%p\n", checkIfExists(d2, str4));
     printf("%s\n", checkIfExists(d2, str5));
     printf("%s\n", checkIfExists(d1, str6));
     printf("%s\n", checkIfExists(d1, str7));
