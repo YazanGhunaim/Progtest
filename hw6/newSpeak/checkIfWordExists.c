@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *checkIfExists(const char *(*replace)[2], char *string)
+char *checkIfExists(const char *(*replace)[2], const char *string)
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
-    for(int i=0; *replace[i]; i++) {
+    for (int i = 0; *replace[i]; i++)
+    {
         numOfRows++;
     }
     // printf("%zu\n", numOfRows);
@@ -20,6 +21,13 @@ char *checkIfExists(const char *(*replace)[2], char *string)
         }
     }
     return res;
+}
+
+char *res(const char *s)
+{
+    char *c = (char *)malloc(strlen(s) + 1);
+    strcpy(c, s);
+    return c;
 }
 
 int main()
@@ -36,21 +44,32 @@ int main()
             {"student", "client"},
             {NULL, NULL}};
 
-     const char *d2[][2] =
+    const char *d2[][2] =
         {
             {"fail", "suboptimal result"},
             {"failure", "non-traditional success"},
             {NULL, NULL}};
 
-    char str[] = "dosao";
-    char str1[] = "hello fail";
-    char str2[] = "student";
-    char str3[] = "you are one hell of a student";
+    const char *str = "dosao";
+    const char *str1 = "hello fail";
+    const char *str2 = "student";
+    const char *str3 = "you are one hell of a student";
 
-    printf("%s\n", checkIfExists(d2, str));
-    printf("%s\n", checkIfExists(d2, str1));
-    printf("%s\n", checkIfExists(d1, str2));
-    printf("%s\n", checkIfExists(d1, str3));
+    char *str4 = res(str);
+    char *str5 = res(str1);
+    char *str6 = res(str2);
+    char *str7 = res(str3);
+
+    printf("strings 1-4: \n");
+    printf("%s\n", str4);
+    printf("%s\n", str5);
+    printf("%s\n", str6);
+    printf("%s\n\n", str7);
+
+    printf("%s\n", checkIfExists(d2, str4));
+    printf("%s\n", checkIfExists(d2, str5));
+    printf("%s\n", checkIfExists(d1, str6));
+    printf("%s\n", checkIfExists(d1, str7));
 
     return 0;
 }
