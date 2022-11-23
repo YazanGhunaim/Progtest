@@ -6,7 +6,6 @@
 #include <assert.h>
 #endif /* __PROGTEST__ */
 
-
 char *checkIfExists(const char *(*replace)[2], char *string)
 {
     size_t numOfRows = 0;
@@ -30,7 +29,7 @@ char *checkIfExists(const char *(*replace)[2], char *string)
 
 char *m(const char *s)
 {
-    char *c = (char *)malloc(strlen(s) + 1);
+    char *c = (char *)malloc(100000 + 1);
     strcpy(c, s);
     return c;
 }
@@ -94,65 +93,109 @@ int checkPrefixInArray(const char *(*replace)[2])
     return 0;
 }
 
-char * newSpeak ( const char * text, const char * (*replace)[2] )
+char *stringReplace(char *source, size_t sourceSize, const char *substring, const char *with)
 {
-  char *res = m(text);
-  
-  if (checkPrefixInArray(replace))
-    return NULL;
-  
+    char *substring_source = strstr(source, substring);
+    if (substring_source == NULL)
+    {
+        return NULL;
+    }
+
+    // int initialIncrease = 10;
+    // if (sourceSize < strlen(source) + (strlen(with) - strlen(substring)) + 1)
+    // {
+    //     initialIncrease = initialIncrease * 2 ;
+    //     source = realloc(source,initialIncrease*sizeof(*source) + 1);
+    // }
+
+    memmove(
+        substring_source + strlen(with),
+        substring_source + strlen(substring),
+        strlen(substring_source) - strlen(substring) + 1);
+
+    memcpy(substring_source, with, strlen(with));
+    return substring_source + strlen(with);
+}
+
+char *replaceInArray(const char *(*replace)[2], char *string)
+{
+    size_t numOfRows = 0;
+    // finding the number of rows using endpoint NULL;
+    for (int i = 0; *replace[i]; i++)
+    {
+        numOfRows++;
+    }
+
+    for (size_t i = 0; i < numOfRows; ++i)
+    {
+        while (stringReplace(string, sizeof(string), *replace[i], replace[i][1]))
+            ;
+    }
+    return string;
+}
+
+char *newSpeak(const char *text, const char *(*replace)[2])
+{
+    char *res = m(text);
+    printf("string: %s , size: %lu\n", res, strlen(res));
+
+    if (checkPrefixInArray(replace))
+        return NULL;
+
+    if (checkIfExists(replace, res))
+    {
+        res = replaceInArray(replace, res);
+    }
+    printf("%s\n", res);
+    return res;
 }
 
 #ifndef __PROGTEST__
-int main ( int argc, char * argv [] )
+int main(int argc, char *argv[])
 {
-  char * res;
+    char *res;
 
-  const char * d1 [][2] =
-  {
-    { "murderer", "termination specialist" },
-    { "failure", "non-traditional success" },
-    { "specialist", "person with certified level of knowledge" },
-    { "dumb", "cerebrally challenged" },
-    { "teacher", "voluntary knowledge conveyor" },
-    { "evil", "nicenest deprived" },
-    { "incorrect answer", "alternative answer" },
-    { "student", "client" },
-    { NULL, NULL }
-  };
+    const char *d1[][2] =
+        {
+            {"murderer", "termination specialist"},
+            {"failure", "non-traditional success"},
+            {"specialist", "person with certified level of knowledge"},
+            {"dumb", "cerebrally challenged"},
+            {"teacher", "voluntary knowledge conveyor"},
+            {"evil", "nicenest deprived"},
+            {"incorrect answer", "alternative answer"},
+            {"student", "client"},
+            {NULL, NULL}};
 
+    const char *d2[][2] =
+        {
+            {"fail", "suboptimal result"},
+            {"failure", "non-traditional success"},
+            {NULL, NULL}};
 
-  const char * d2 [][2] =
-  {
-    { "fail", "suboptimal result" },
-    { "failure", "non-traditional success" },
-    { NULL, NULL }
-  };
+    res = newSpeak("Everybody is happy.", d1);
+    assert(!strcmp(res, "Everybody is happy."));
+    free(res);
 
+    res = newSpeak("The student answered an incorrect answer.", d1);
+    assert(!strcmp(res, "The client answered an alternative answer."));
+    free(res);
 
-  res = newSpeak ( "Everybody is happy.", d1 );
-  assert ( ! strcmp ( res, "Everybody is happy." ) );
-  free ( res );
+    res = newSpeak("He was dumb, his failure was expected.", d1);
+    assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
+    free(res);
 
-  res = newSpeak ( "The student answered an incorrect answer.", d1 );
-  assert ( ! strcmp ( res, "The client answered an alternative answer." ) );
-  free ( res );
+    // res = newSpeak("The evil teacher became a murderer.", d1);
+    // assert(!strcmp(res, "The nicenest deprived voluntary knowledge conveyor became a termination specialist."));
+    // free(res);
 
-  res = newSpeak ( "He was dumb, his failure was expected.", d1 );
-  assert ( ! strcmp ( res, "He was cerebrally challenged, his non-traditional success was expected." ) );
-  free ( res );
+    res = newSpeak("Devil's advocate.", d1);
+    assert(!strcmp(res, "Dnicenest deprived's advocate."));
+    free(res);
 
-  res = newSpeak ( "The evil teacher became a murderer.", d1 );
-  assert ( ! strcmp ( res, "The nicenest deprived voluntary knowledge conveyor became a termination specialist." ) );
-  free ( res );
+    res = newSpeak("Hello.", d2);
+    assert(!res);
 
-  res = newSpeak ( "Devil's advocate.", d1 );
-  assert ( ! strcmp ( res, "Dnicenest deprived's advocate." ) );
-  free ( res );
-
-  res = newSpeak ( "Hello.", d2 );
-  assert ( ! res );
-
-  return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 #endif /* __PROGTEST__ */
