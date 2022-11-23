@@ -140,7 +140,10 @@ char *newSpeak(const char *text, const char *(*replace)[2])
     printf("string: %s , size: %lu\n", res, strlen(res));
 
     if (checkPrefixInArray(replace))
-        return NULL;
+    {
+	free(res);
+	return NULL;
+    }
 
     if (checkIfExists(replace, res))
     {
