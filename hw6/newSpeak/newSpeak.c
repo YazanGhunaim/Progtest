@@ -137,7 +137,8 @@ char *replaceInArray(const char *(*replace)[2], char *string)
 char *newSpeak(const char *text, const char *(*replace)[2])
 {
     char *res = m(text);
-    printf("string: %s , size: %lu\n", res, strlen(res));
+    
+    // printf("string: %s , size: %lu\n", res, strlen(res));
 
     if (checkPrefixInArray(replace))
     {
