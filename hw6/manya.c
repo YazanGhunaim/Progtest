@@ -95,5 +95,6 @@ int main() {
         printf("Invalid input.\n");
     }
     free(array);
+    
     return 0;
 }
