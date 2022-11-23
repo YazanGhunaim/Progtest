@@ -6,7 +6,7 @@
 #include <assert.h>
 #endif /* __PROGTEST__ */
 
-char *checkIfExists(const char *(*replace)[2], char *string)
+char *checkIfExists(const char *(*replace)[2],char *string)
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
@@ -93,7 +93,7 @@ int checkPrefixInArray(const char *(*replace)[2])
     return 0;
 }
 
-char *stringReplace(char *source, size_t sourceSize, const char *substring, const char *with)
+char *stringReplace(char *source, size_t sourceSize, const char *substring, const char *with, const char *(*replace)[2])
 {
     char *substring_source = strstr(source, substring);
     if (substring_source == NULL)
@@ -107,7 +107,6 @@ char *stringReplace(char *source, size_t sourceSize, const char *substring, cons
     //     initialIncrease = initialIncrease * 2 ;
     //     source = realloc(source,initialIncrease*sizeof(*source) + 1);
     // }
-
     memmove(
         substring_source + strlen(with),
         substring_source + strlen(substring),
@@ -128,7 +127,7 @@ char *replaceInArray(const char *(*replace)[2], char *string)
 
     for (size_t i = 0; i < numOfRows; ++i)
     {
-        while (stringReplace(string, sizeof(string), *replace[i], replace[i][1]))
+        while (stringReplace(string, sizeof(string), *replace[i], replace[i][1], replace))
             ;
     }
     return string;
@@ -137,13 +136,13 @@ char *replaceInArray(const char *(*replace)[2], char *string)
 char *newSpeak(const char *text, const char *(*replace)[2])
 {
     char *res = m(text);
-    
+
     // printf("string: %s , size: %lu\n", res, strlen(res));
 
     if (checkPrefixInArray(replace))
     {
-	free(res);
-	return NULL;
+        free(res);
+        return NULL;
     }
 
     if (checkIfExists(replace, res))
@@ -177,28 +176,28 @@ int main(int argc, char *argv[])
             {"failure", "non-traditional success"},
             {NULL, NULL}};
 
-    res = newSpeak("Everybody is happy.", d1);
-    assert(!strcmp(res, "Everybody is happy."));
-    free(res);
-
-    res = newSpeak("The student answered an incorrect answer.", d1);
-    assert(!strcmp(res, "The client answered an alternative answer."));
-    free(res);
-
-    res = newSpeak("He was dumb, his failure was expected.", d1);
-    assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
-    free(res);
-
-    // res = newSpeak("The evil teacher became a murderer.", d1);
-    // assert(!strcmp(res, "The nicenest deprived voluntary knowledge conveyor became a termination specialist."));
+    // res = newSpeak("Everybody is happy.", d1);
+    // assert(!strcmp(res, "Everybody is happy."));
     // free(res);
 
-    res = newSpeak("Devil's advocate.", d1);
-    assert(!strcmp(res, "Dnicenest deprived's advocate."));
+    // res = newSpeak("The student answered an incorrect answer.", d1);
+    // assert(!strcmp(res, "The client answered an alternative answer."));
+    // free(res);
+
+    // res = newSpeak("He was dumb, his failure was expected.", d1);
+    // assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
+    // free(res);
+
+    res = newSpeak("The evil teacher became a murderer.", d1);
+    assert(!strcmp(res, "The nicenest deprived voluntary knowledge conveyor became a termination specialist."));
     free(res);
 
-    res = newSpeak("Hello.", d2);
-    assert(!res);
+    // res = newSpeak("Devil's advocate.", d1);
+    // assert(!strcmp(res, "Dnicenest deprived's advocate."));
+    // free(res);
+
+    // res = newSpeak("Hello.", d2);
+    // assert(!res);
 
     return EXIT_SUCCESS;
 }
