@@ -176,28 +176,28 @@ int main(int argc, char *argv[])
             {"failure", "non-traditional success"},
             {NULL, NULL}};
 
-    // res = newSpeak("Everybody is happy.", d1);
-    // assert(!strcmp(res, "Everybody is happy."));
-    // free(res);
+    res = newSpeak("Everybody is happy.", d1);
+    assert(!strcmp(res, "Everybody is happy."));
+    free(res);
 
-    // res = newSpeak("The student answered an incorrect answer.", d1);
-    // assert(!strcmp(res, "The client answered an alternative answer."));
-    // free(res);
+    res = newSpeak("The student answered an incorrect answer.", d1);
+    assert(!strcmp(res, "The client answered an alternative answer."));
+    free(res);
 
-    // res = newSpeak("He was dumb, his failure was expected.", d1);
-    // assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
-    // free(res);
+    res = newSpeak("He was dumb, his failure was expected.", d1);
+    assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
+    free(res);
 
     res = newSpeak("The evil teacher became a murderer.", d1);
     assert(!strcmp(res, "The nicenest deprived voluntary knowledge conveyor became a termination specialist."));
     free(res);
 
-    // res = newSpeak("Devil's advocate.", d1);
-    // assert(!strcmp(res, "Dnicenest deprived's advocate."));
-    // free(res);
+    res = newSpeak("Devil's advocate.", d1);
+    assert(!strcmp(res, "Dnicenest deprived's advocate."));
+    free(res);
 
-    // res = newSpeak("Hello.", d2);
-    // assert(!res);
+    res = newSpeak("Hello.", d2);
+    assert(!res);
 
     return EXIT_SUCCESS;
 }
