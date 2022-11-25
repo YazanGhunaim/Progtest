@@ -187,7 +187,7 @@ void fillDistanceArray(double distanceArray[], double x[], double y[], int lengt
     for (int i = 0; i < lengthOfDistanceArray; i++)
     {
         int count = i + 1;
-        for (int j = 0, k = count; j < lengthOfDistanceArray - 1 && k < lengthOfX; j++)
+        for (int j = 0, k = count; j < lengthOfDistanceArray && k < lengthOfX; j++)
         {
             distanceArray[index] = distance(x, y, i, k);
             index++;
@@ -242,7 +242,7 @@ void pairs(char *names[], double x[], double y[], double minDist, int lengthOfX,
     for (int i = 0; i < lengthOfDistanceArray; i++)
     {
         int count = i + 1;
-        for (int j = 0, k = count; j < lengthOfDistanceArray - 1 && k < lengthOfX; j++)
+        for (int j = 0, k = count; j < lengthOfDistanceArray && k < lengthOfX; j++)
         {
             if (fabs(distance(x, y, i, k) - minDist) <= EPSILON * (fabs(minDist) + fabs(minDist)))
             {
