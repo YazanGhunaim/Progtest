@@ -182,6 +182,7 @@ char *newSpeak(const char *text, const char *(*replace)[2])
     if (checkPrefixInArray(replace, numOfRows))
     {
         free(res);
+        free(data);
         return NULL;
     }
 
@@ -203,6 +204,7 @@ char *newSpeak(const char *text, const char *(*replace)[2])
         res = replaceInArray(replace, res, numOfRows, data, dataLength);
     }
     printf("%s\n", res);
+    free(data);
     return res;
 }
 
