@@ -6,15 +6,56 @@
 #include <assert.h>
 #endif /* __PROGTEST__ */
 
-char *checkIfExists(const char *(*replace)[2],char *string)
+int howManyTimes(char *str, const char *toSearch)
 {
-    size_t numOfRows = 0;
-    // finding the number of rows using endpoint NULL;
-    for (int i = 0; *replace[i]; i++)
+    int i, j, found, count;
+    int stringLen, searchLen;
+
+    stringLen = strlen(str);      // length of string
+    searchLen = strlen(toSearch); // length of word to be searched
+
+    count = 0;
+
+    for (i = 0; i <= stringLen - searchLen; i++)
     {
-        numOfRows++;
+        /* Match word with string */
+        found = 1;
+        for (j = 0; j < searchLen; j++)
+        {
+            if (str[i + j] != toSearch[j])
+            {
+                found = 0;
+                break;
+            }
+        }
+
+        if (found == 1)
+        {
+            count++;
+        }
     }
-    // printf("%zu\n", numOfRows);
+
+    return count;
+}
+char *checkWhatExists(const char *(*replace)[2], char *string, int data[], size_t numOfRows, size_t *dataLength)
+{
+    size_t length = 0;
+    char *res = string;
+    for (size_t i = 0; i < numOfRows; ++i)
+    {
+        res = strstr(string, *replace[i]);
+        if (res)
+        {
+            data[length] = i;
+            length++;
+        }
+    }
+    *dataLength = length;
+    return res;
+}
+
+char *checkIfExists(const char *(*replace)[2], char *string, size_t numOfRows)
+{
     char *res;
     for (size_t i = 0; i < numOfRows; ++i)
     {
@@ -73,15 +114,8 @@ int checkPrefix(const char *string, const char *(*replace)[2], size_t rows, size
     return 1;
 }
 
-int checkPrefixInArray(const char *(*replace)[2])
+int checkPrefixInArray(const char *(*replace)[2], size_t numOfRows)
 {
-
-    size_t numOfRows = 0;
-    // finding the number of rows using endpoint NULL;
-    for (int i = 0; *replace[i]; i++)
-    {
-        numOfRows++;
-    }
 
     for (size_t i = 0; i < numOfRows; ++i)
     {
@@ -116,7 +150,22 @@ char *stringReplace(char *source, size_t sourceSize, const char *substring, cons
     return substring_source + strlen(with);
 }
 
-char *replaceInArray(const char *(*replace)[2], char *string)
+char *replaceInArray(const char *(*replace)[2], char *string, size_t numOfRows, int data[], size_t dataLength)
+{
+    for (size_t i = 0; i < dataLength; i++)
+    {
+        int numOfTimes = howManyTimes(string, *replace[data[i]]);
+        while (numOfTimes)
+        {
+            stringReplace(string, sizeof(string), *replace[data[i]], replace[data[i]][1], replace);
+            numOfTimes--;
+        }
+    }
+
+    return string;
+}
+
+char *newSpeak(const char *text, const char *(*replace)[2])
 {
     size_t numOfRows = 0;
     // finding the number of rows using endpoint NULL;
@@ -124,32 +173,33 @@ char *replaceInArray(const char *(*replace)[2], char *string)
     {
         numOfRows++;
     }
-
-    for (size_t i = 0; i < numOfRows; ++i)
-    {
-        while (stringReplace(string, sizeof(string), *replace[i], replace[i][1], replace))
-            ;
-    }
-    return string;
-}
-
-char *newSpeak(const char *text, const char *(*replace)[2])
-{
+    size_t initialDataSize = numOfRows;
+    int *data = (int *)malloc(initialDataSize * sizeof(*data));
     char *res = m(text);
+    size_t dataLength = 0;
 
-    // printf("string: %s , size: %lu\n", res, strlen(res));
-
-    if (checkPrefixInArray(replace))
+    if (checkPrefixInArray(replace, numOfRows))
     {
         free(res);
+        free(data);
         return NULL;
     }
 
-    if (checkIfExists(replace, res))
+    if (checkIfExists(replace, res, numOfRows))
     {
-        res = replaceInArray(replace, res);
+        char *temp = res;
+
+        for (size_t i = 0; i < numOfRows; i++)
+        {
+            if (checkWhatExists(replace, res, data, numOfRows, &dataLength))
+            {
+                temp = checkWhatExists(replace, temp, data, numOfRows, &dataLength);
+            }
+        }
+        res = replaceInArray(replace, res, numOfRows, data, dataLength);
     }
     printf("%s\n", res);
+    free(data);
     return res;
 }
 
@@ -184,8 +234,8 @@ int main(int argc, char *argv[])
     assert(!strcmp(res, "The client answered an alternative answer."));
     free(res);
 
-    res = newSpeak("He was dumb, his failure was expected.", d1);
-    assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected."));
+    res = newSpeak("He was dumb, his failure was expected. dumb", d1);
+    assert(!strcmp(res, "He was cerebrally challenged, his non-traditional success was expected. cerebrally challenged"));
     free(res);
 
     res = newSpeak("The evil teacher became a murderer.", d1);
