@@ -1,1 +1,0 @@
-CMakeLists.txt not found in /Users/yazanghunaim/Documents/progtest/Progtest/hw6/newSpeak Select CMakeLists.txt
