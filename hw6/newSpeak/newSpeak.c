@@ -68,7 +68,7 @@ char *checkIfExists(const char *(*replace)[2], char *string, size_t numOfRows)
     return res;
 }
 
-char *makeString(const char *s)
+char *m(const char *s)
 {
     char *c = (char *)malloc(100000 + 1);
     strcpy(c, s);
@@ -127,13 +127,20 @@ int checkPrefixInArray(const char *(*replace)[2], size_t numOfRows)
     return 0;
 }
 
-char *stringReplace(char *source, size_t sourceSize, const char *substring, const char *with)
+char *stringReplace(char *source, const char *substring, const char *with)
 {
     char *substring_source = strstr(source, substring);
     if (substring_source == NULL)
     {
         return NULL;
     }
+
+    // int initialIncrease = 10;
+    // if (sourceSize < strlen(source) + (strlen(with) - strlen(substring)) + 1)
+    // {
+    //     initialIncrease = initialIncrease * 2 ;
+    //     source = realloc(source,initialIncrease*sizeof(*source) + 1);
+    // }
     memmove(
         substring_source + strlen(with),
         substring_source + strlen(substring),
@@ -150,7 +157,7 @@ char *replaceInArray(const char *(*replace)[2], char *string, int data[], size_t
         int numOfTimes = howManyTimes(string, *replace[data[i]]);
         while (numOfTimes)
         {
-            stringReplace(string, sizeof(string), *replace[data[i]], replace[data[i]][1]);
+            stringReplace(string, *replace[data[i]], replace[data[i]][1]);
             numOfTimes--;
         }
     }
@@ -168,7 +175,7 @@ char *newSpeak(const char *text, const char *(*replace)[2])
     }
     size_t initialDataSize = numOfRows;
     int *data = (int *)malloc(initialDataSize * sizeof(*data));
-    char *res = makeString(text);
+    char *res = m(text);
     size_t dataLength = 0;
 
     if (checkPrefixInArray(replace, numOfRows))

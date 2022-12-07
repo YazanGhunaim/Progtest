@@ -219,8 +219,6 @@ int numberOfPairs(double distance[], int n, double minDist)
 {
 
     int ans = 0;
-
-    // for each index i and j
     for (int i = 0; i < n; i++)
     {
         if (fabs(distance[i] - minDist) <= EPSILON * (fabs(minDist) + fabs(distance[i])))
