@@ -15,23 +15,23 @@ typedef struct TItem
 
 /* ---implement the following functions:--- */
 
-// newItem: 
+// newItem:
 /*
 This function is a helper function that eases the creation of a linked list. The function dynamically allocates the new item,
 it initializes the fields, and finally, it returns the pointer to that newly created item.
-Fields m_Next and m_Name must be initialized from the corresponding parameters, field m_Secret is to be filled with zero bytes ('\0'). 
+Fields m_Next and m_Name must be initialized from the corresponding parameters, field m_Secret is to be filled with zero bytes ('\0').
 */
 
 TITEM *newItem(const char *name, TITEM *next)
 {
-  TITEM * newNode = (TITEM *)malloc(sizeof(TITEM));
+  TITEM *newNode = (TITEM *)malloc(sizeof(TITEM));
 
-  newNode -> m_Next = next;
+  newNode->m_Next = next;
   // using strdup to dynamically allocate space for the string and copy its contents
   // ! REMEMBER TO FREE THIS MEMORY !
-  newNode -> m_Name = strdup(name);
+  newNode->m_Name = strdup(name);
   // filling m_Secret with 0 bytes
-  memset(newNode -> m_Secret, 0 ,24);
+  memset(newNode->m_Secret, 0, 24);
   return newNode;
 }
 
@@ -39,11 +39,11 @@ TITEM *newItem(const char *name, TITEM *next)
 /*
 The function is used to sort the elements in the given linked list.
 The parameter is a pointer to the first element of the list to sort (l) and the requested sort order (ascending).
-The function re-arranges the elements in the list such that the elements follow the requested sort order. 
-The function must not free the elements in the original list (and return their copies). Instead, the function must use the existing elements, 
+The function re-arranges the elements in the list such that the elements follow the requested sort order.
+The function must not free the elements in the original list (and return their copies). Instead, the function must use the existing elements,
 it just needs to modify the links. Return value is the pointer to the first element of the newly re-arranged list.
-The sorting uses element name (m_Name) as the sort key. The strings are compared in the case sensitive way. 
-The sort order is either ascending (parameter ascending is not zero), or the sort order is descending (parameter ascending is zero). 
+The sorting uses element name (m_Name) as the sort key. The strings are compared in the case sensitive way.
+The sort order is either ascending (parameter ascending is not zero), or the sort order is descending (parameter ascending is zero).
 The function must perform stable sorting.
 */
 
@@ -109,61 +109,62 @@ TITEM *sortList(TITEM *l, int ascending)
   if (ascending)
   {
     // base case: the list has 0 or 1 items
-  if (!l || !l->m_Next)
-    return l;
+    if (!l || !l->m_Next)
+      return l;
 
-  // split the list in two parts
-  TITEM *a = l, *b = l->m_Next;
-  while (b && b->m_Next)
+    // split the list in two parts
+    TITEM *a = l, *b = l->m_Next;
+    while (b && b->m_Next)
+    {
+      a = a->m_Next;
+      b = b->m_Next->m_Next;
+    }
+    b = a->m_Next;
+    a->m_Next = NULL;
+
+    // sort the two parts
+    a = sortList(l, ascending);
+    b = sortList(b, ascending);
+
+    // merge the sorted parts
+    return merge(a, b, cmpA);
+  }
+  else
   {
-    a = a->m_Next;
-    b = b->m_Next->m_Next;
+    // base case: the list has 0 or 1 items
+    if (!l || !l->m_Next)
+      return l;
+
+    // split the list in two parts
+    TITEM *a = l, *b = l->m_Next;
+    while (b && b->m_Next)
+    {
+      a = a->m_Next;
+      b = b->m_Next->m_Next;
+    }
+    b = a->m_Next;
+    a->m_Next = NULL;
+
+    // sort the two parts
+    a = sortList(l, ascending);
+    b = sortList(b, ascending);
+
+    // merge the sorted parts
+    return merge(a, b, cmpD);
   }
-  b = a->m_Next;
-  a->m_Next = NULL;
 
-  // sort the two parts
-  a = sortList(l, ascending);
-  b = sortList(b, ascending);
-
-  // merge the sorted parts
-  return merge(a, b, cmpA);
-  }
-  else {
-      // base case: the list has 0 or 1 items
-  if (!l || !l->m_Next)
-    return l;
-
-  // split the list in two parts
-  TITEM *a = l, *b = l->m_Next;
-  while (b && b->m_Next)
-  {
-    a = a->m_Next;
-    b = b->m_Next->m_Next;
-  }
-  b = a->m_Next;
-  a->m_Next = NULL;
-
-  // sort the two parts
-  a = sortList(l, ascending);
-  b = sortList(b, ascending);
-
-  // merge the sorted parts
-  return merge(a, b, cmpD);
-  }
-  
   return NULL;
 }
 
 // freeList:
-/* 
+/*
 The function deallocates the memory used by the linked list.
 The parameter is a pointer to the first element in the list.
 */
 
 void freeList(TITEM *src)
 {
-   while (src)
+  while (src)
   {
     TITEM *next = src->m_Next;
     free(src->m_Name);
