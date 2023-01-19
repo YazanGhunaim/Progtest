@@ -349,20 +349,20 @@ void freeResult(TRESULT *res)
 
 void doneAll(TDATABASE *db)
 {
-  if (!db)
-    return;
-  while (db)
+  TDATABASE *temp = db;
+  while (temp != NULL)
   {
-    TDATABASE *temp = db->next;
-    if (db->person)
+    if (temp->person)
     {
-      free(db->person->m_Name);
-      freeResult(db->person);
+      free(temp->person->m_Name);
+      free(temp->person);
     }
-    free(db);
-    db = temp;
+    TDATABASE *to_free = temp;
+    temp = temp->next;
+    free(to_free);
   }
 }
+
 #ifndef __PROGTEST__
 int main(int argc, char *argv[])
 {
@@ -523,7 +523,7 @@ int main(int argc, char *argv[])
   assert(commonAncestors(&b, 7, 10) == NULL);
   doneAll(&b);
 
-  // doneAll(&a);
+  doneAll(&a);
 
   return 0;
 }
