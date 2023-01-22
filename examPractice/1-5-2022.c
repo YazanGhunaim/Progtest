@@ -40,6 +40,30 @@ void delList(TITEM *l)
 }
 #endif /* __PROGTEST__ */
 
+int validList(TITEM *head)
+{
+  if (!head)
+    return 0;
+  TITEM *temp = head;
+  while (temp)
+  {
+    if (!isdigit(temp->m_Digit))
+      return 0;
+    temp = temp->m_Next;
+  }
+  return 1;
+}
+
+int validArray(TITEM **array, int size)
+{
+  for (int i = 0; i < size; ++i)
+  {
+    if (!validList(array[i]))
+      return 0;
+  }
+  return 1;
+}
+
 TITEM *reverse(TITEM *head)
 {
   TITEM *current, *prev, *next;
@@ -56,13 +80,16 @@ TITEM *reverse(TITEM *head)
   return prev;
 }
 
-void reverseArrayLists(TITEM **array, int nr)
+TITEM **reverseArray(TITEM **array, int size)
 {
-  for (int i = 0; i < nr; ++i)
+  for (int i = 0; i < size; ++i)
+  {
     array[i] = reverse(array[i]);
+  }
+  return array;
 }
 
-int lengthOfList(TITEM *head)
+int length(TITEM *head)
 {
   int length = 0;
   TITEM *temp = head;
@@ -74,7 +101,7 @@ int lengthOfList(TITEM *head)
   return length;
 }
 
-int compareLists(TITEM *l1, TITEM *l2)
+int compareList(TITEM *l1, TITEM *l2)
 {
   TITEM *temp1, *temp2;
   temp1 = l1;
@@ -84,51 +111,25 @@ int compareLists(TITEM *l1, TITEM *l2)
   {
     if (temp1->m_Digit > temp2->m_Digit)
       return 1;
-    else if (temp1->m_Digit < temp2->m_Digit)
+    if (temp1->m_Digit < temp2->m_Digit)
       return -1;
-
     temp1 = temp1->m_Next;
     temp2 = temp2->m_Next;
   }
-
   return 0;
 }
 
-int hasLetters(TITEM *head)
-{
-  TITEM *temp = head;
-  while (temp)
-  {
-    if (!isdigit(temp->m_Digit))
-      return 1;
-    temp = temp->m_Next;
-  }
-  return 0;
-}
-
-int valid(TITEM **array, int nr)
-{
-  for (int i = 0; i < nr; ++i)
-  {
-    if (!array[i] || hasLetters(array[i]))
-      return 0;
-  }
-  return 1;
-}
-
-TITEM *getResult(TITEM **array, int nr)
+TITEM *getResult(TITEM **array, int size)
 {
   TITEM *max = array[0];
-  for (int i = 0; i < nr; ++i)
+  for (int i = 1; i < size; ++i)
   {
-    if (lengthOfList(array[i]) > lengthOfList(max))
+    if (length(array[i]) > length(max))
       max = array[i];
-    else if (lengthOfList(array[i]) == lengthOfList(max))
+    if (length(array[i]) == length(max))
     {
-      if (compareLists(max, array[i]) == -1)
-      {
+      if (compareList(array[i], max) == 1)
         max = array[i];
-      }
     }
   }
   return max;
@@ -136,11 +137,12 @@ TITEM *getResult(TITEM **array, int nr)
 
 TITEM *maxOf(TITEM **x, int nr)
 {
-  if (!valid(x, nr))
+  if (!validArray(x, nr))
     return NULL;
-    
-  reverseArrayLists(x, nr);
-  return getResult(x, nr);
+
+  x = reverseArray(x, nr);
+  TITEM *result = getResult(x, nr);
+  return result;
 }
 
 #ifndef __PROGTEST__
@@ -171,7 +173,7 @@ int main(void)
   for (int i = 0; i < 3; i++)
     delList(a[i]);
 
-  //   //----- Bad input ------------------------------------------ ------
+  //----- Bad input ------------------------------------------ ------
   a[0] = createList("222");
   a[1] = NULL;
   a[2] = createList("4333");
@@ -183,7 +185,7 @@ int main(void)
   for (int i = 0; i < 4; i++)
     delList(a[i]);
 
-  //   //----- Bad value ----------------------------------------- ----
+  //----- Bad value ----------------------------------------- ----
   a[0] = createList("29a");
   a[1] = createList("11");
   res = maxOf(a, 2);
@@ -193,7 +195,7 @@ int main(void)
   for (int i = 0; i < 2; i++)
     delList(a[i]);
 
-  //   //----- Same number ----------------------------------------- ------
+  // //----- Same number ----------------------------------------- ------
   a[0] = createList("27986");
   a[1] = createList("3256");
   a[2] = createList("27986");
@@ -205,7 +207,7 @@ int main(void)
   for (int i = 0; i < 4; i++)
     delList(a[i]);
 
-  //   //----- Zero ---------------------------------------------------- -------------
+  //----- Zero ---------------------------------------------------- -------------
   a[0] = createList("0");
   a[1] = createList("0");
   a[2] = createList("0");
@@ -218,7 +220,7 @@ int main(void)
   for (int i = 0; i < 5; i++)
     delList(a[i]);
 
-  //   //----- Unsigned Long Long Int ------------------------------------
+  //----- Unsigned Long Long Int ------------------------------------
   a[0] = createList("0");
   a[1] = createList("18446744073709551615");
   a[2] = createList("1112367822345622");
@@ -231,7 +233,7 @@ int main(void)
   for (int i = 0; i < 5; i++)
     delList(a[i]);
 
-  //   //----- More like Unsigned Long Long Int ----------------------------
+  //----- More like Unsigned Long Long Int ----------------------------
   a[0] = createList("50230529401950984100481491404914091408580");
   a[1] = createList("50230529401950123123123234492492042044242");
   a[2] = createList("50230529401950984100480123032931110119944");
@@ -244,7 +246,7 @@ int main(void)
   for (int i = 0; i < 5; i++)
     delList(a[i]);
 
-  //   //----- Greater than Unsigned Long Long Int different long --------------
+  //----- Greater than Unsigned Long Long Int different long --------------
   a[0] = createList("253051330239013091349049023023");
   a[1] = createList("253051330239013091349049023024");
   a[2] = createList("2094241212100000000000100100");

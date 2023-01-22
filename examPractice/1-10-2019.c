@@ -32,74 +32,61 @@ void deleteList(TITEM *l)
 
 #endif /* __PROGTEST__ */
 
-int validCheck(TITEM *head)
+int valid(TITEM *head)
 {
-    int count = 0;
-    TITEM *temp = head;
-    if (!isdigit(temp->m_Digit))
-        return 0;
-    while (temp->m_Next)
-    {
-        if (!isdigit(temp->m_Digit))
-            return 0;
-        // printf("%d ", isdigit(temp->m_Digit));
-        count++;
-        temp = temp->m_Next;
-    }
-    if (temp->m_Digit == '0' && count)
+    if (!head)
         return 0;
 
+    int count = 0;
+    TITEM *temp = head;
+    while (temp->m_Next)
+    {
+        count++;
+        if (!isdigit(temp->m_Digit))
+            return 0;
+        temp = temp->m_Next;
+    }
+    if (!isdigit(temp->m_Digit) || (temp->m_Digit == '0' && count > 0))
+        return 0;
     return 1;
 }
 TITEM *addList(TITEM *l1, TITEM *l2)
 {
-    if (!validCheck(l1) || !validCheck(l2))
+    if (!valid(l1) || !valid(l2))
         return NULL;
-
-    if (!l1 && !l2)
-        return NULL;
-    if (!l1)
-        return l2;
-    if (!l2)
-        return l2;
-
     TITEM *newList = (TITEM *)malloc(sizeof(*newList));
     TITEM *dummy = newList;
 
-    int currentSum = 0;
     int carry = 0;
+    int currentSum = 0;
     while (l1 || l2)
     {
-        int l1Value = (l1) ? l1->m_Digit - '0' : 0;
-        int l2Value = (l2) ? l2->m_Digit - '0' : 0;
+        int l1_val = (l1) ? l1->m_Digit - '0' : 0;
+        int l2_val = (l2) ? l2->m_Digit - '0' : 0;
 
-        currentSum = l1Value + l2Value + carry;
         carry = currentSum / 10;
+        currentSum = l1_val + l2_val + carry;
         int lastDigit = currentSum % 10;
 
         TITEM *newNode = (TITEM *)malloc(sizeof(*newNode));
         newNode->m_Digit = lastDigit + '0';
         newNode->m_Next = NULL;
-
         dummy->m_Next = newNode;
+        dummy = dummy->m_Next;
 
         if (l1)
             l1 = l1->m_Next;
         if (l2)
             l2 = l2->m_Next;
-
-        dummy = dummy->m_Next;
     }
-
     if (carry)
     {
         TITEM *newNode = (TITEM *)malloc(sizeof(*newNode));
-        newNode->m_Digit = carry;
+        newNode->m_Digit = carry + '0';
         newNode->m_Next = NULL;
         dummy->m_Next = newNode;
         dummy = dummy->m_Next;
     }
-
     return newList->m_Next;
 }
 
