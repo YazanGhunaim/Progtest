@@ -135,6 +135,15 @@ int invalidInput(TITEM **array, int size)
     return 0;
 }
 
+void print(TITEM *head)
+{
+    TITEM *temp = head;
+    while (temp)
+    {
+        printf("%c", temp->m_Digit);
+        temp = temp->m_Next;
+    }
+}
 TITEM *maxOf(TITEM **x, int nr)
 {
     if (invalidInput(x, nr))
@@ -174,7 +183,7 @@ int main(void)
     for (int i = 0; i < 3; i++)
         delList(a[i]);
 
-    // //----- Bad input ------------------------------------------ ------
+    //----- Bad input ------------------------------------------ ------
     a[0] = createList("222");
     a[1] = NULL;
     a[2] = createList("4333");
@@ -186,7 +195,7 @@ int main(void)
     for (int i = 0; i < 4; i++)
         delList(a[i]);
 
-    // //----- Bad value ----------------------------------------- ----
+    //----- Bad value ----------------------------------------- ----
     a[0] = createList("29a");
     a[1] = createList("11");
     res = maxOf(a, 2);
@@ -196,7 +205,7 @@ int main(void)
     for (int i = 0; i < 2; i++)
         delList(a[i]);
 
-    // //----- Same number ----------------------------------------- ------
+    //----- Same number ----------------------------------------- ------
     a[0] = createList("27986");
     a[1] = createList("3256");
     a[2] = createList("27986");
@@ -208,7 +217,7 @@ int main(void)
     for (int i = 0; i < 4; i++)
         delList(a[i]);
 
-    // //----- Zero -----------------------------------------------------------------
+    //----- Zero -----------------------------------------------------------------
     a[0] = createList("0");
     a[1] = createList("0");
     a[2] = createList("0");
@@ -221,7 +230,7 @@ int main(void)
     for (int i = 0; i < 5; i++)
         delList(a[i]);
 
-    // //----- Unsigned Long Long Int ------------------------------------
+    //----- Unsigned Long Long Int ------------------------------------
     a[0] = createList("0");
     a[1] = createList("18446744073709551615");
     a[2] = createList("1112367822345622");
@@ -234,7 +243,7 @@ int main(void)
     for (int i = 0; i < 5; i++)
         delList(a[i]);
 
-    // //----- More like Unsigned Long Long Int ----------------------------
+    //----- More like Unsigned Long Long Int ----------------------------
     a[0] = createList("50230529401950984100481491404914091408580");
     a[1] = createList("50230529401950123123123234492492042044242");
     a[2] = createList("50230529401950984100480123032931110119944");
@@ -247,7 +256,7 @@ int main(void)
     for (int i = 0; i < 5; i++)
         delList(a[i]);
 
-    // //----- Greater than Unsigned Long Long Int different long --------------
+    //----- Greater than Unsigned Long Long Int different long --------------
     a[0] = createList("253051330239013091349049023023");
     a[1] = createList("253051330239013091349049023024");
     a[2] = createList("2094241212100000000000100100");
