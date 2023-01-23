@@ -38,6 +38,16 @@ int takenParking(GARAGE *taj, int floor, int position)
     return 0;
 }
 
+int getPlate(GARAGE *taj, int floor, int position)
+{
+    GARAGE *temp = taj;
+    for (int i = 0; i < temp->occupiedlen; ++i)
+    {
+        if (temp->occupied[i].floor == floor && temp->occupied[i].position == position)
+            return i;
+    }
+    return 0;
+}
 int existingCar(GARAGE *taj, char RZ[11], int *index)
 {
     for (int i = 0; i < taj->occupiedlen; ++i)
@@ -63,7 +73,7 @@ void readRequests(GARAGE *taj, int initialSize)
         {
             int requestedFloor, requestedPosition;
             char buffer[11];
-            if (scanf("%d %d %10s", &requestedFloor, &requestedPosition, &buffer) != 3 || requestedFloor < 0 || requestedFloor >= taj->floors || requestedPosition < 0 || requestedPosition > taj->positions)
+            if (scanf("%d %d %10s", &requestedFloor, &requestedPosition, buffer) != 3 || requestedFloor < 0 || requestedFloor >= taj->floors || requestedPosition < 0 || requestedPosition > taj->positions)
                 break;
             if (!takenParking(taj, requestedFloor, requestedPosition))
             {
@@ -81,14 +91,15 @@ void readRequests(GARAGE *taj, int initialSize)
             }
             else
             {
-                printf("OCCUPIED.\n");
+                int index = getPlate(taj, requestedFloor, requestedPosition);
+                printf("Occupied %s\n", taj->occupied[index].rz);
             }
         }
         if (mode == '-')
         {
             int index = 0;
             char bufferRZ[11];
-            if (scanf("%10s", &bufferRZ) != 1)
+            if (scanf("%10s", bufferRZ) != 1)
                 break;
             if (existingCar(taj, bufferRZ, &index))
             {
@@ -101,7 +112,7 @@ void readRequests(GARAGE *taj, int initialSize)
             }
             else
             {
-                printf("Not Found.\n");
+                printf("Not Found\n");
             }
         }
     }
