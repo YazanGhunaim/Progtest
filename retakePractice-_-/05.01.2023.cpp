@@ -5,7 +5,7 @@
 
 typedef struct dominos
 {
-    char name[64];
+    char name[65];
     int a, b, c, d;
     int visited;
 } DOMINO;
@@ -22,7 +22,8 @@ int readInput(DOMINO **array, int initialSize, int *finalSize)
     int total = 0;
     int index = 0;
     DOMINO read;
-    while (scanf("%64s [%d,%d,%d,%d]", read.name, &read.a, &read.b, &read.c, &read.d) == 5)
+    // while(scanf("%64[^ ] [ %d , %d , %d , %d ]\n", read.name, &read.a, &read.b, &read.c, &read.d) == 5)
+    while (scanf(" %64s [ %d , %d , %d , %d ]", read.name, &read.a, &read.b, &read.c, &read.d) == 5)
     {
         read.visited = 0;
         if (total >= initialSize)
