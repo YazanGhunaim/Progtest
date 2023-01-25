@@ -51,7 +51,6 @@ int readInput(ALL *x)
             for (int i = 0; i < 3; ++i)
             {
                 x->reg[x->regLen].name[i] = (char *)malloc(50 * sizeof(char));
-                x->reg[x->regLen].sortedName[i] = (char *)malloc(50 * sizeof(char));
             }
             number = sscanf(line, "%c: %s %s %s", &mode, x->reg[x->regLen].name[0], x->reg[x->regLen].name[1], x->reg[x->regLen].name[2]);
             x->reg[x->regLen].nameLength = number - 1;
@@ -155,6 +154,26 @@ void withoutRegistration(ALL *x)
     }
 }
 
+void freeMemory(ALL *x)
+{
+    for (int i = 0; i < x->regLen; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            free(x->reg[i].name[j]);
+        }
+    }
+    for (int i = 0; i < x->preLen; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            free(x->pre[i].name[j]);
+        }
+    }
+    free(x->reg);
+    free(x->pre);
+}
+
 int main()
 {
     ALL x;
@@ -177,23 +196,6 @@ int main()
     printf("Without registration:\n");
     withoutRegistration(&x);
 
-    int i, j;
-    for (i = 0; i < x.preLen; ++i)
-    {
-        for (j = 0; j < x.pre[i].nameLength; ++j)
-        {
-            free(x.pre[i].name[j]);
-        }
-    }
-    free(x.pre);
-    for (i = 0; i < x.regLen; ++i)
-    {
-        for (j = 0; j < x.reg[i].nameLength; ++j)
-        {
-            free(x.reg[i].name[j]);
-        }
-    }
-    free(x.reg);
-
+    freeMemory(&x);
     return 0;
 }
