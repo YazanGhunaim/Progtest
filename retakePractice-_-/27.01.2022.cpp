@@ -26,6 +26,30 @@ void delList(Tnode *l)
 }
 #endif /* __PROGTEST__ */
 
+int validList(Tnode *head)
+{
+    if (!head)
+        return 0;
+    Tnode *temp = head;
+    while (temp->m_Next)
+    {
+        if (temp->m_Val > temp->m_Next->m_Val)
+            return 0;
+        temp = temp->m_Next;
+    }
+    return 1;
+}
+
+int validArray(Tnode **array, int size)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        if (!validList(array[i]))
+            return 0;
+    }
+    return 1;
+}
+
 int length(Tnode *head)
 {
     int length = 0;
@@ -38,7 +62,7 @@ int length(Tnode *head)
     return length;
 }
 
-int totalLength(Tnode **array, int size)
+int lengthArray(Tnode **array, int size)
 {
     int sum = 0;
     for (int i = 0; i < size; ++i)
@@ -48,16 +72,15 @@ int totalLength(Tnode **array, int size)
     return sum;
 }
 
-void fillArray(Tnode **a, int nr, int *array)
+void fillArray(int *array, Tnode **a, int size)
 {
     int index = 0;
-    for (int i = 0; i < nr; ++i)
+    for (int i = 0; i < size; ++i)
     {
-        Tnode *temp = a[i];
-        while (temp)
+        while (a[i])
         {
-            array[index++] = temp->m_Val;
-            temp = temp->m_Next;
+            array[index++] = a[i]->m_Val;
+            a[i] = a[i]->m_Next;
         }
     }
 }
@@ -72,6 +95,7 @@ Tnode *insert(Tnode *head, int data)
     Tnode *newNode = (Tnode *)malloc(sizeof(*newNode));
     newNode->m_Val = data;
     newNode->m_Next = NULL;
+
     if (!head)
     {
         head = newNode;
@@ -80,55 +104,30 @@ Tnode *insert(Tnode *head, int data)
     Tnode *temp = head;
     while (temp->m_Next)
         temp = temp->m_Next;
+
     temp->m_Next = newNode;
-
-    return head;
-}
-Tnode *arrayToList(Tnode *head, int *array, int size)
-{
-    for (int i = 0; i < size; ++i)
-    {
-        head = insert(head, array[i]);
-    }
     return head;
 }
 
-int valid(Tnode *head)
+Tnode *arrayToList(int *array, int length)
 {
-    if (!head)
-        return 0;
-    Tnode *temp = head;
-    while (temp->m_Next)
+    Tnode *result = NULL;
+    for (int i = 0; i < length; ++i)
     {
-        if (temp->m_Val > temp->m_Next->m_Val)
-            return 0;
-        temp = temp->m_Next;
+        result = insert(result, array[i]);
     }
-    return 1;
-}
-
-int checkArray(Tnode **array, int size)
-{
-    for (int i = 0; i < size; ++i)
-    {
-        Tnode *temp = array[i];
-        if (!valid(temp))
-            return 0;
-    }
-    return 1;
+    return result;
 }
 
 Tnode *compareList(Tnode **a, int nr)
 {
-
-    if (!checkArray(a, nr))
+    if (!validArray(a, nr))
         return NULL;
-    int length = totalLength(a, nr);
-    int *array = (int *)malloc(sizeof(*array) * length);
-    fillArray(a, nr, array);
-    qsort(array, length, sizeof(array[0]), (int (*)(const void *, const void *))cmp);
-    Tnode *result = NULL;
-    result = arrayToList(result, array, length);
+    int totalLength = lengthArray(a, nr);
+    int *array = (int *)malloc(totalLength * sizeof(*array));
+    fillArray(array, a, nr);
+    qsort(array, totalLength, sizeof(array[0]), (int (*)(const void *, const void *))cmp);
+    Tnode *result = arrayToList(array, totalLength);
     free(array);
     return result;
 }
