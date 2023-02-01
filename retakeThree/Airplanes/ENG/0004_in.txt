@@ -1,0 +1,6 @@
+10,10: AirFrance
+10,10: Lufthansa
+20, 20: Ryanair
+20,20: Wizz
+20,20: Qantas
+10,10: LOT
