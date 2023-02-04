@@ -1,0 +1,5 @@
+Plane coordinates:
+Minimum airplane distance: 2.000000
+Pairs found: 2
+KLM - Qantas
+Lufthansa - AirFrance

@@ -1,0 +1,4 @@
+Plane coordinates:
+Minimum airplane distance: 2000000.000000
+Pairs found: 1
+LOT - KLM
